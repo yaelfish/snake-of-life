@@ -1,11 +1,20 @@
 import './style.css';
 import * as PIXI from 'pixi.js';
+import GameLife from 'game-life'
 
 // Create the application helper and add its render target to the page
 const HEIGHT = 640, WIDTH= 1000;
-let apples = 0;
+let score = 0;
 let app = new PIXI.Application({ width: WIDTH, height: HEIGHT });
+let scoreText = new PIXI.Text(`Score: ${score}`, {
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff,
+    align: 'center',
+});
 document.body.appendChild(app.view);
+const canvas = document.querySelector('canvas');
+
 
 const drawRectangle = (color) => {
     const graphics = new PIXI.Graphics();
@@ -24,6 +33,7 @@ let sprite = drawRectangle(0x4d4e4f);
 let spriteApple = drawRectangle(0xf44336);
 app.stage.addChild(sprite);
 app.stage.addChild(spriteApple);
+app.stage.addChild(scoreText);
 
 // Set the initial position
 sprite.x = sprite.width;
@@ -32,6 +42,10 @@ sprite.y = sprite.height;
 // Set the initial position
 spriteApple.x = app.screen.width / 2;
 spriteApple.y = app.screen.height / 2;
+
+scoreText.x = WIDTH - 150;
+scoreText.y = HEIGHT - 50;
+
 
 // Add a ticker callback to move the sprite back and forth
 let elapsedX = 0.0;
@@ -93,10 +107,20 @@ const eatApple = () => {
     if(Math.abs(sprite.x - spriteApple.x) <=40 && Math.abs(sprite.y - spriteApple.y) <= 40 ) {
         spriteApple.x = getRandomValue(WIDTH);
         spriteApple.y = getRandomValue(HEIGHT);
-        apples++;
+        score++;
+        scoreText.text = `Score: ${score}`;
         //sprite.width += sprite.width;
     }
 }
+
+// const game = GameLife(canvas, {
+//     graphics: {
+//         board: {width: 1900, height: 800},
+//         colors: {background: '#FFFFFF', grid: '#E0E0E0'},
+//         cells: {size: 5}
+//     },
+//     game: {delay: 1500}
+// });
 
 document.body.addEventListener('keydown', moveSnake);
 
