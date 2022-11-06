@@ -7,7 +7,7 @@ const HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 const app = new PIXI.Application({
     width: WIDTH,
     height: HEIGHT,
-    backgroundColor: 0x220901
+    backgroundColor: 0x000000
 });
 let score = 0;
 let scoreText = new PIXI.Text(`Score: ${score}`, {
@@ -106,12 +106,15 @@ const generateNewGrid = (grid: any[]) => {
 }
 
 let grid = createGrid(columns, rows);
+let isPaused = false;
 
 setInterval(() => {
-    graphics.clear();
-    loseRectangels = [];
-    grid = generateNewGrid(grid);
-    drawGrid(grid);
+    if(!isPaused) {
+        graphics.clear();
+        loseRectangels = [];
+        grid = generateNewGrid(grid);
+        drawGrid(grid);
+    }
 }, 1800);
 
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
@@ -125,6 +128,11 @@ spriteSnake.height = 40, spriteSnake.width = 40;
 
 spriteSnake.x = spriteSnake.width;
 spriteSnake.y = spriteSnake.height;
+
+let gameOver = PIXI.Sprite.from('game_over.jpeg');
+gameOver.height = 550, gameOver.width = 720;
+gameOver.x =  (app.screen.width / 2) - (gameOver.height / 2);
+gameOver.y = (app.screen.height / 2) - (gameOver.width / 2);
 
 scoreText.x = WIDTH - 150;
 scoreText.y = HEIGHT - 50;
@@ -154,6 +162,9 @@ let stepsY = 0;
 let speed = 0;
 
 app.ticker.add((delta) => {
+    if(isPaused) {
+        return;
+    }
     elapsedX += delta;
     if (spriteSnake.x + stepsX > WIDTH) { //end of screen
         spriteSnake.x = 0;
@@ -233,7 +244,9 @@ const stuckwall = () => {
     loseRectangels.forEach((ch) => {
         if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
             sound.play('lose');
-            restart(false);
+            app.stage.addChild(gameOver);
+            spriteSnake.x = app.screen.width + 100;
+            isPaused = true;
         }
     })
 }
@@ -252,6 +265,8 @@ const restart = (withApple:boolean) => {
     spriteApple.x = app.screen.width / 2;
     spriteApple.y = app.screen.height / 2;
     speed = 0;
+    isPaused = false;
+    app.stage.removeChild(gameOver);
 }
 
 document.body.addEventListener('keydown', moveSnake);
