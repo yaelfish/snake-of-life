@@ -167,7 +167,7 @@ function getRandomValue(max: number) {
 
 
 const eatApple = () => {
-    if (Math.abs(spriteSnake.x - spriteApple.x) <= 60 && Math.abs(spriteSnake.y - spriteApple.y) <= 60) {
+    if (Math.abs(spriteSnake.x - spriteApple.x) <= 40 && Math.abs(spriteSnake.y - spriteApple.y) <= 40) {
         spriteApple.x = getRandomValue(WIDTH);
         spriteApple.y = getRandomValue(HEIGHT);
         score++;
