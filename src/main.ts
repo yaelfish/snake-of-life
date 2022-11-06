@@ -124,6 +124,17 @@ spriteSnake.y = spriteSnake.height;
 scoreText.x = WIDTH - 150;
 scoreText.y = HEIGHT - 50;
 
+let spriteRestart = PIXI.Sprite.from('restart.png');
+spriteRestart.height = 60, spriteRestart.width = 60;
+// Set the initial positions
+spriteRestart.x = 0;
+spriteRestart.y = 0;
+spriteRestart.interactive=true;
+spriteRestart.buttonMode=true;
+spriteRestart.on('click',()=>{
+    restartGame();
+})
+app.stage.addChild(spriteRestart);
 app.stage.addChild(spriteApple);
 app.stage.addChild(spriteSnake);
 app.stage.addChild(scoreText);
@@ -154,6 +165,14 @@ app.ticker.add((delta) => {
     eatApple();
     stuckwall();
 });
+
+const restartGame=()=>{
+    grid = createGrid(columns, rows);
+    graphics.clear();
+    rectangels=[];
+    grid = generateNewGrid(grid);
+    drawGrid(grid);
+}
 
 const moveSnake = (event: any) => {
     switch (event.keyCode) {
