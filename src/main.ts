@@ -28,7 +28,7 @@ const createGrid = (cols: number, rows: number) => {
     for (let i = 0; i < cols; i++) {
         grid[i] = new Array(rows);
         for (let j = 0; j < rows; j++) {
-            grid[i][j] = Math.random() > 0.5;
+            grid[i][j] = Math.random() > 0.2;
         }
     }
     return grid;
@@ -39,16 +39,14 @@ let rectangels=[];
 const drawre=( i:number,j:number)=> {
     const rectangle:{x:number,y:number}={x:i * SIZE,y:j * SIZE};
     const a= Math.random() > 0.5;
-if(a){
-    graphics.beginFill(0xed6621);
-    rectangels.push(rectangle);
-}
-    else{
-    graphics.beginFill(0xeeff88);
+    if(a){
+        graphics.beginFill(0xed6621);
+        rectangels.push(rectangle);
+    }else{
+        graphics.beginFill(0xeeff88);
     }
     graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
     graphics.endFill();
-
 }
 
 const drawGrid = (grid: any[]) => {
@@ -112,8 +110,8 @@ app.ticker.add((delta) => {
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
 spriteApple.height = 60, spriteApple.width = 60;
 // Set the initial positions
-spriteApple.x = app.screen.width / 2;
-spriteApple.y = app.screen.height / 2;
+spriteApple.x = app.screen.width / 5;
+spriteApple.y = app.screen.height / 6;
 
 let spriteSnake = PIXI.Sprite.from('cats.png');
 spriteSnake.height = 60, spriteSnake.width = 60;
@@ -196,12 +194,20 @@ const eatApple = () => {
 const stuckwall = () => {
     rectangels.forEach((ch)=>{
         if (Math.abs(spriteSnake.x - ch.x) <= 20 && Math.abs(spriteSnake.y - ch.y) <= 20) {
-            spriteSnake.x=0;
-            spriteSnake.y=0;
+            restart();
         }
     })
-
 }
+
+const restart = () => {
+    stepsX = 1.25;
+    stepsY = 0;
+    spriteSnake.x=0;
+    spriteSnake.y=0;
+    scoreText.text = 'Score: 0';
+    grid = createGrid(columns, rows);
+}
+
 document.body.addEventListener('keydown', moveSnake);
 
 
