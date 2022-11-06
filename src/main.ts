@@ -215,7 +215,7 @@ function getRandomValue(max: number) {
 
 
 const eatApple = () => {
-    if (Math.abs(spriteSnake.x - spriteApple.x) <= 60 && Math.abs(spriteSnake.y - spriteApple.y) <= 60) {
+    if (Math.abs(spriteSnake.x - spriteApple.x) <= 35 && Math.abs(spriteSnake.y - spriteApple.y) <= 35) {
         sound.play('collect');
         applePosition()
         score++;
@@ -231,7 +231,7 @@ const applePosition=()=>{
         x = getRandomValue(WIDTH - spriteApple.width);
         y = getRandomValue(HEIGHT - spriteApple.height);
         loseRectangels.forEach((lr)=>{
-            if((Math.abs(lr.x - x) <= 60 && Math.abs(lr.y - y) <= 60)){
+            if((Math.abs(lr.x - x) <= 35 && Math.abs(lr.y - y) <= 35)){
                 redayPosApple=false;
             }
         })
