@@ -110,8 +110,8 @@ app.ticker.add((delta) => {
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
 spriteApple.height = 60, spriteApple.width = 60;
 // Set the initial positions
-spriteApple.x = app.screen.width / 2 - spriteApple.width;
-spriteApple.y = app.screen.height / 2 - spriteApple.height;
+spriteApple.x = app.screen.width / 2;
+spriteApple.y = app.screen.height / 2;
 
 let spriteSnake = PIXI.Sprite.from('cats.png');
 spriteSnake.height = 60, spriteSnake.width = 60;
@@ -194,8 +194,8 @@ function getRandomValue(max: number) {
 
 const eatApple = () => {
     if (Math.abs(spriteSnake.x - spriteApple.x) <= 60 && Math.abs(spriteSnake.y - spriteApple.y) <= 60) {
-        spriteApple.x = getRandomValue(WIDTH);
-        spriteApple.y = getRandomValue(HEIGHT);
+        spriteApple.x = getRandomValue(WIDTH - spriteApple.width);
+        spriteApple.y = getRandomValue(HEIGHT - spriteApple.height);
         score++;
         scoreText.text = `Score: ${score}`;
     }
@@ -217,6 +217,8 @@ const restart = () => {
     spriteSnake.y=0;
     scoreText.text = 'Score: 0';
     grid = createGrid(columns, rows);
+    spriteApple.x = app.screen.width / 2;
+    spriteApple.y = app.screen.height / 2;
 }
 
 document.body.addEventListener('keydown', moveSnake);
