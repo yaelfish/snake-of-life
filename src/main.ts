@@ -52,12 +52,17 @@ const drawre=( i:number,j:number)=> {
 const drawGrid = (grid: any[]) => {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-            if (grid[i][j]) {
+            if (grid[i][j]&&isEmptyArea(i,j)) {
                drawre(i,j);
             }
         }
     }
     app.stage.addChild(graphics);
+}
+
+const isEmptyArea=(i:number,j:number)=>{
+   return !(Math.abs(spriteRestart.x - i*SIZE) <= 60 && Math.abs(spriteRestart.y - j*SIZE) <= 60)&&!(Math.abs(spriteApple.x - i*SIZE) <= 60 && Math.abs(spriteApple.y - j*SIZE) <= 60);
+
 }
 
 const getAliveCount = (x: number, y: number, grid: any[]) => {
@@ -130,9 +135,7 @@ spriteRestart.y = HEIGHT - 100;
 spriteRestart.interactive=true;
 spriteRestart.buttonMode=true;
 spriteRestart.on('click',()=>{
-    restart();
-    spriteApple.x = getRandomValue(WIDTH);
-    spriteApple.y = getRandomValue(HEIGHT);
+    restart(true);
 })
 
 app.stage.addChild(spriteRestart);
@@ -210,17 +213,21 @@ const eatApple = () => {
 const stuckwall = () => {
     rectangels.forEach((ch)=>{
         if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
-            restart();
+            restart(false);
         }
     })
 }
 
-const restart = () => {
+const restart = (withApple:boolean) => {
     stepsX = 1.25;
     stepsY = 0;
     spriteSnake.x=0;
     spriteSnake.y=0;
     scoreText.text = 'Score: 0';
+    if(withApple){
+        spriteApple.x = getRandomValue(WIDTH);
+        spriteApple.y = getRandomValue(HEIGHT);
+    }
     grid = createGrid(columns, rows);
     spriteApple.x = app.screen.width / 2;
     spriteApple.y = app.screen.height / 2;
