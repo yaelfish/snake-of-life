@@ -152,7 +152,7 @@ app.ticker.add((delta) => {
     }
 
     eatApple();
-    stackwall();
+    stuckwall();
 });
 
 const moveSnake = (event: any) => {
@@ -193,7 +193,7 @@ const eatApple = () => {
 }
 
 
-const stackwall = () => {
+const stuckwall = () => {
     rectangels.forEach((ch)=>{
         if (Math.abs(spriteSnake.x - ch.x) <= 20 && Math.abs(spriteSnake.y - ch.y) <= 20) {
             spriteSnake.x=0;
