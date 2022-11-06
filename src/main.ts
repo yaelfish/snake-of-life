@@ -18,7 +18,7 @@ let scoreText = new PIXI.Text(`Score: ${score}`, {
 
 document.body.appendChild(app.view);
 const graphics = new PIXI.Graphics();
-const SIZE = 3;
+const SIZE = 7;
 const columns = Math.floor(window.innerWidth / SIZE);
 const rows = Math.floor(window.innerHeight / SIZE);
 app.stage.interactive = true;
@@ -34,13 +34,28 @@ const createGrid = (cols: number, rows: number) => {
     return grid;
 };
 
+let rectangels=[];
+
+const drawre=( i:number,j:number)=> {
+    const rectangle:{x:number,y:number}={x:i * SIZE,y:j * SIZE};
+    const a= Math.random() > 0.5;
+if(a){
+    graphics.beginFill(0xed6621);
+    rectangels.push(rectangle);
+}
+    else{
+    graphics.beginFill(0xeeff88);
+    }
+    graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
+    graphics.endFill();
+
+}
+
 const drawGrid = (grid: any[]) => {
-    for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[i].length; j++) {
+    for (let i = 30; i < grid.length; i++) {
+        for (let j = 30; j < grid[i].length; j++) {
             if (grid[i][j]) {
-                graphics.beginFill(0xed6621);
-                graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
-                graphics.endFill();
+               drawre(i,j);
             }
         }
     }
@@ -87,6 +102,7 @@ let grid = createGrid(columns, rows);
 
 app.ticker.add((delta) => {
     graphics.clear();
+    rectangels=[];
     grid = generateNewGrid(grid);
     drawGrid(grid);
     // increment the ticker
@@ -136,6 +152,7 @@ app.ticker.add((delta) => {
     }
 
     eatApple();
+    stackwall();
 });
 
 const moveSnake = (event: any) => {
@@ -175,6 +192,16 @@ const eatApple = () => {
     }
 }
 
+
+const stackwall = () => {
+    rectangels.forEach((ch)=>{
+        if (Math.abs(spriteSnake.x - ch.x) <= 20 && Math.abs(spriteSnake.y - ch.y) <= 20) {
+            spriteSnake.x=0;
+            spriteSnake.y=0;
+        }
+    })
+
+}
 document.body.addEventListener('keydown', moveSnake);
 
 
