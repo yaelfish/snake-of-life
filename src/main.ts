@@ -220,7 +220,7 @@ const eatApple = () => {
         applePosition()
         score++;
         scoreText.text = `Score: ${score}`;
-        speed += 0.5;
+        speed += 1;
     }
 }
 
