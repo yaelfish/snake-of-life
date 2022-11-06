@@ -43,10 +43,10 @@ const drawre=( i:number,j:number)=> {
     const rectangle:{x:number,y:number}={x:i * SIZE,y:j * SIZE};
     const a= Math.random() > 0.5;
     if(a){
-        graphics.beginFill(0xed6621);
+        graphics.beginFill(0xFB2208);
         rectangels.push(rectangle);
     }else{
-        graphics.beginFill(0xeeff88);
+        graphics.beginFill(0x02FC20);
     }
     graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
     graphics.endFill();
@@ -228,6 +228,7 @@ const restart = () => {
     grid = createGrid(columns, rows);
     spriteApple.x = app.screen.width / 2;
     spriteApple.y = app.screen.height / 2;
+    speed = 0;
 }
 
 document.body.addEventListener('keydown', moveSnake);
