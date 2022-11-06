@@ -221,6 +221,7 @@ const restart = () => {
     grid = createGrid(columns, rows);
     spriteApple.x = app.screen.width / 2;
     spriteApple.y = app.screen.height / 2;
+    speed = 0;
 }
 
 document.body.addEventListener('keydown', moveSnake);
