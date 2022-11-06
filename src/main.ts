@@ -40,10 +40,10 @@ const drawre=( i:number,j:number)=> {
     const rectangle:{x:number,y:number}={x:i * SIZE,y:j * SIZE};
     const a= Math.random() > 0.5;
     if(a){
-        graphics.beginFill(0xed6621);
+        graphics.beginFill(0xFB2208);
         rectangels.push(rectangle);
     }else{
-        graphics.beginFill(0xeeff88);
+        graphics.beginFill(0x02FC20);
     }
     graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
     graphics.endFill();
@@ -131,7 +131,10 @@ spriteRestart.interactive=true;
 spriteRestart.buttonMode=true;
 spriteRestart.on('click',()=>{
     restart();
+    spriteApple.x = getRandomValue(WIDTH);
+    spriteApple.y = getRandomValue(HEIGHT);
 })
+
 app.stage.addChild(spriteRestart);
 app.stage.addChild(spriteApple);
 app.stage.addChild(spriteSnake);
@@ -206,7 +209,7 @@ const eatApple = () => {
 
 const stuckwall = () => {
     rectangels.forEach((ch)=>{
-        if (Math.abs(spriteSnake.x - ch.x) <= 20 && Math.abs(spriteSnake.y - ch.y) <= 20) {
+        if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
             restart();
         }
     })
