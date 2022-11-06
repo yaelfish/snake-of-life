@@ -131,8 +131,8 @@ spriteSnake.y = spriteSnake.height;
 
 let gameOver = PIXI.Sprite.from('game_over.jpeg');
 gameOver.height = 550, gameOver.width = 720;
-gameOver.x =  (app.screen.width / 2) - (gameOver.height / 2);
-gameOver.y = (app.screen.height / 2) - (gameOver.width / 2);
+gameOver.x =  (app.screen.width / 2) - (gameOver.width / 2);
+gameOver.y = (app.screen.height / 2) - (gameOver.height / 2);
 
 scoreText.x = WIDTH - 150;
 scoreText.y = HEIGHT - 50;
