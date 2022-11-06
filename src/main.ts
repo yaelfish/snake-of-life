@@ -40,7 +40,7 @@ const createGrid = (cols: number, rows: number) => {
 
 let loseRectangels: any[] = [];
 
-const drawre = (i: number, j: number) => {
+const drawBlock = (i: number, j: number) => {
     const rectangle: { x: number, y: number } = { x: i * SIZE, y: j * SIZE };
     const isLosing = Math.random() > 0.5;
     if (isLosing) {
@@ -57,7 +57,7 @@ const drawGrid = (grid: any[]) => {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
             if (grid[i][j]) {
-                drawre(i, j);
+                drawBlock(i, j);
             }
         }
     }
@@ -132,6 +132,7 @@ spriteRestart.x = app.screen.width / 2;
 spriteRestart.y = HEIGHT - 100;
 spriteRestart.interactive = true;
 spriteRestart.buttonMode = true;
+
 spriteRestart.on('click', () => {
     restart();
     spriteApple.x = getRandomValue(WIDTH);
