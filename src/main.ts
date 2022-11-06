@@ -207,7 +207,7 @@ const eatApple = () => {
 
 const stuckwall = () => {
     rectangels.forEach((ch)=>{
-        if (Math.abs(spriteSnake.x - ch.x) <= 20 && Math.abs(spriteSnake.y - ch.y) <= 20) {
+        if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
             restart();
         }
     })
