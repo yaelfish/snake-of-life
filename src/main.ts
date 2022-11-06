@@ -17,10 +17,12 @@ let scoreText = new PIXI.Text(`Score: ${score}`, {
 });
 
 document.body.appendChild(app.view);
+    
 const graphics = new PIXI.Graphics();
-const SIZE = 3;
-const columns = Math.floor(window.innerWidth / SIZE);
-const rows = Math.floor(window.innerHeight / SIZE);
+const SIZE = 40;
+const columns = Math.floor((window.innerWidth) / SIZE);
+const rows = Math.floor((window.innerHeight) / SIZE);
+
 app.stage.interactive = true;
 
 const createGrid = (cols: number, rows: number) => {
@@ -85,22 +87,20 @@ const generateNewGrid = (grid: any[]) => {
 
 let grid = createGrid(columns, rows);
 
-app.ticker.add((delta) => {
+setInterval(()=> {
     graphics.clear();
     grid = generateNewGrid(grid);
     drawGrid(grid);
-    // increment the ticker
-    delta += 0.1;
-});
+}, 1000)
 
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
-spriteApple.height = 60, spriteApple.width = 60;
+spriteApple.height = 40, spriteApple.width = 40;
 // Set the initial positions
 spriteApple.x = app.screen.width / 2;
 spriteApple.y = app.screen.height / 2;
 
 let spriteSnake = PIXI.Sprite.from('cats.png');
-spriteSnake.height = 60, spriteSnake.width = 60;
+spriteSnake.height = 40, spriteSnake.width = 40;
 
 spriteSnake.x = spriteSnake.width;
 spriteSnake.y = spriteSnake.height;
