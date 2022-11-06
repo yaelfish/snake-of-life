@@ -131,7 +131,10 @@ spriteRestart.interactive=true;
 spriteRestart.buttonMode=true;
 spriteRestart.on('click',()=>{
     restart();
+    spriteApple.x = getRandomValue(WIDTH);
+    spriteApple.y = getRandomValue(HEIGHT);
 })
+
 app.stage.addChild(spriteRestart);
 app.stage.addChild(spriteApple);
 app.stage.addChild(spriteSnake);
