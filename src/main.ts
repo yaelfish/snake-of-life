@@ -144,6 +144,7 @@ app.stage.addChild(scoreText);
 let elapsedX = 0.0;
 let stepsX = 1.25;
 let stepsY = 0;
+let speed = 0;
 
 app.ticker.add((delta) => {
     elapsedX += delta;
@@ -170,20 +171,20 @@ app.ticker.add((delta) => {
 const moveSnake = (event: any) => {
     switch (event.keyCode) {
         case 37: // Left
-            stepsX = -1.25;
+            stepsX = -(1.25 + speed);
             stepsY = 0;
             break;
         case 38: // Up
             stepsX = 0;
-            stepsY = -1.25;
+            stepsY = -(1.25 + speed);
             break;
         case 39: // Right
-            stepsX = 1.25;
+            stepsX = 1.25 + speed;
             stepsY = 0;
             break;
         case 40: // Down
             stepsX = 0;
-            stepsY = 1.25;
+            stepsY = 1.25 + speed;
             break;
         default:
             break;
@@ -201,6 +202,7 @@ const eatApple = () => {
         spriteApple.y = getRandomValue(HEIGHT - spriteApple.height);
         score++;
         scoreText.text = `Score: ${score}`;
+        speed += 0.5;
     }
 }
 
