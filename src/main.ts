@@ -50,8 +50,8 @@ const drawre=( i:number,j:number)=> {
 }
 
 const drawGrid = (grid: any[]) => {
-    for (let i = 30; i < grid.length; i++) {
-        for (let j = 30; j < grid[i].length; j++) {
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
             if (grid[i][j]) {
                drawre(i,j);
             }
@@ -110,8 +110,8 @@ app.ticker.add((delta) => {
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
 spriteApple.height = 60, spriteApple.width = 60;
 // Set the initial positions
-spriteApple.x = app.screen.width / 5;
-spriteApple.y = app.screen.height / 6;
+spriteApple.x = app.screen.width / 2 - spriteApple.width;
+spriteApple.y = app.screen.height / 2 - spriteApple.height;
 
 let spriteSnake = PIXI.Sprite.from('cats.png');
 spriteSnake.height = 60, spriteSnake.width = 60;
