@@ -257,6 +257,7 @@ const restart = (withApple:boolean) => {
     spriteSnake.x = 0;
     spriteSnake.y = 0;
     scoreText.text = 'Score: 0';
+    score = 0;
     if(withApple){
         spriteApple.x = getRandomValue(WIDTH);
         spriteApple.y = getRandomValue(HEIGHT);
