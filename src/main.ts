@@ -206,14 +206,28 @@ function getRandomValue(max: number) {
 const eatApple = () => {
     if (Math.abs(spriteSnake.x - spriteApple.x) <= 60 && Math.abs(spriteSnake.y - spriteApple.y) <= 60) {
         sound.play('collect');
-        spriteApple.x = getRandomValue(WIDTH - spriteApple.width);
-        spriteApple.y = getRandomValue(HEIGHT - spriteApple.height);
+        applePosition()
         score++;
         scoreText.text = `Score: ${score}`;
         speed += 0.5;
     }
 }
 
+const applePosition=()=>{
+    let redayPosApple=false,x=0,y=0;
+    while(!redayPosApple) {
+        redayPosApple=true;
+        x = getRandomValue(WIDTH - spriteApple.width);
+        y = getRandomValue(HEIGHT - spriteApple.height);
+        loseRectangels.forEach((lr)=>{
+            if((Math.abs(lr.x - x) <= 60 && Math.abs(lr.y - y) <= 60)){
+                redayPosApple=false;
+            }
+        })
+    }
+    spriteApple.x=x;
+    spriteApple.y=y;
+}
 
 const stuckwall = () => {
     loseRectangels.forEach((ch) => {
