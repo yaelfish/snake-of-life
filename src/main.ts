@@ -1,5 +1,6 @@
 import './style.css';
 import * as PIXI from 'pixi.js';
+import { sound } from '@pixi/sound';
 
 // Create the application helper and add its render target to the page
 const HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
@@ -15,6 +16,8 @@ let scoreText = new PIXI.Text(`Score: ${score}`, {
     fill: 0xffffff,
     align: 'center',
 });
+
+sound.add('lose', 'lose.mp3');
 
 document.body.appendChild(app.view);
 const graphics = new PIXI.Graphics();
@@ -210,6 +213,7 @@ const eatApple = () => {
 const stuckwall = () => {
     rectangels.forEach((ch)=>{
         if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
+            sound.play('lose');
             restart();
         }
     })
