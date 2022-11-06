@@ -22,9 +22,10 @@ sound.add('collect', 'collect.mp3');
 
 document.body.appendChild(app.view);
 const graphics = new PIXI.Graphics();
-const SIZE = 40;
-const columns = Math.floor(window.innerWidth / SIZE);
-const rows = Math.floor(window.innerHeight / SIZE);
+const BLOCK_SIZE = 40;
+const BLOCK_DISTANCE = 35;
+const columns = Math.floor(window.innerWidth / BLOCK_SIZE);
+const rows = Math.floor(window.innerHeight / BLOCK_SIZE);
 app.stage.interactive = true;
 
 const createGrid = (cols: number, rows: number) => {
@@ -41,7 +42,7 @@ const createGrid = (cols: number, rows: number) => {
 let loseRectangels: any[] = [];
 
 const drawBlock = (i: number, j: number) => {
-    const rectangle: { x: number, y: number } = { x: i * SIZE, y: j * SIZE };
+    const rectangle: { x: number, y: number } = { x: i * BLOCK_SIZE, y: j * BLOCK_SIZE };
     const isLosing = Math.random() > 0.5;
     if (isLosing) {
         graphics.beginFill(0xFB2208); // red
@@ -49,7 +50,7 @@ const drawBlock = (i: number, j: number) => {
     } else {
         graphics.beginFill(0x02FC20); // green
     }
-    graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
+    graphics.drawRect(i * BLOCK_SIZE, j * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
     graphics.endFill();
 }
 
@@ -64,8 +65,8 @@ const drawGrid = (grid: any[]) => {
     app.stage.addChild(graphics);
 }
 
-const isEmptyArea=(i:number,j:number)=>{
-   return !(Math.abs(spriteRestart.x - i*SIZE) <= 60 && Math.abs(spriteRestart.y - j*SIZE) <= 60)&&!(Math.abs(spriteApple.x - i*SIZE) <= 60 && Math.abs(spriteApple.y - j*SIZE) <= 60);
+const isEmptyArea = (i: number, j: number) => {
+    return !(Math.abs(spriteRestart.x - i * BLOCK_SIZE) <= 60 && Math.abs(spriteRestart.y - j * BLOCK_SIZE) <= 60) && !(Math.abs(spriteApple.x - i * BLOCK_SIZE) <= 60 && Math.abs(spriteApple.y - j * BLOCK_SIZE) <= 60);
 
 }
 
@@ -109,7 +110,7 @@ let grid = createGrid(columns, rows);
 let isPaused = false;
 
 setInterval(() => {
-    if(!isPaused) {
+    if (!isPaused) {
         graphics.clear();
         loseRectangels = [];
         grid = generateNewGrid(grid);
@@ -118,20 +119,20 @@ setInterval(() => {
 }, 1800);
 
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
-spriteApple.height = 40, spriteApple.width = 40;
+spriteApple.height = BLOCK_SIZE, spriteApple.width = BLOCK_SIZE;
 // Set the initial positions
 spriteApple.x = app.screen.width / 2;
 spriteApple.y = app.screen.height / 2;
 
 let spriteSnake = PIXI.Sprite.from('cats.png');
-spriteSnake.height = 40, spriteSnake.width = 40;
+spriteSnake.height = BLOCK_SIZE, spriteSnake.width = BLOCK_SIZE;
 
 spriteSnake.x = spriteSnake.width;
 spriteSnake.y = spriteSnake.height;
 
 let gameOver = PIXI.Sprite.from('game_over.jpeg');
 gameOver.height = 550, gameOver.width = 720;
-gameOver.x =  (app.screen.width / 2) - (gameOver.width / 2);
+gameOver.x = (app.screen.width / 2) - (gameOver.width / 2);
 gameOver.y = (app.screen.height / 2) - (gameOver.height / 2);
 
 scoreText.x = WIDTH - 150;
@@ -162,7 +163,7 @@ let stepsY = 0;
 let speed = 0;
 
 app.ticker.add((delta) => {
-    if(isPaused) {
+    if (isPaused) {
         return;
     }
     elapsedX += delta;
@@ -215,7 +216,7 @@ function getRandomValue(max: number) {
 
 
 const eatApple = () => {
-    if (Math.abs(spriteSnake.x - spriteApple.x) <= 35 && Math.abs(spriteSnake.y - spriteApple.y) <= 35) {
+    if (Math.abs(spriteSnake.x - spriteApple.x) <= BLOCK_DISTANCE && Math.abs(spriteSnake.y - spriteApple.y) <= BLOCK_DISTANCE) {
         sound.play('collect');
         applePosition()
         score++;
@@ -224,25 +225,25 @@ const eatApple = () => {
     }
 }
 
-const applePosition=()=>{
-    let redayPosApple=false,x=0,y=0;
-    while(!redayPosApple) {
-        redayPosApple=true;
+const applePosition = () => {
+    let redayPosApple = false, x = 0, y = 0;
+    while (!redayPosApple) {
+        redayPosApple = true;
         x = getRandomValue(WIDTH - spriteApple.width);
         y = getRandomValue(HEIGHT - spriteApple.height);
-        loseRectangels.forEach((lr)=>{
-            if((Math.abs(lr.x - x) <= 35 && Math.abs(lr.y - y) <= 35)){
-                redayPosApple=false;
+        loseRectangels.forEach((lr) => {
+            if ((Math.abs(lr.x - x) <= BLOCK_DISTANCE && Math.abs(lr.y - y) <= BLOCK_DISTANCE)) {
+                redayPosApple = false;
             }
         })
     }
-    spriteApple.x=x;
-    spriteApple.y=y;
+    spriteApple.x = x;
+    spriteApple.y = y;
 }
 
 const stuckwall = () => {
     loseRectangels.forEach((ch) => {
-        if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
+        if (Math.abs(spriteSnake.x - ch.x) <= BLOCK_DISTANCE && Math.abs(spriteSnake.y - ch.y) <= BLOCK_DISTANCE) {
             sound.play('lose');
             app.stage.addChild(gameOver);
             spriteSnake.x = app.screen.width + 100;
@@ -251,13 +252,13 @@ const stuckwall = () => {
     })
 }
 
-const restart = (withApple:boolean) => {
+const restart = (withApple: boolean) => {
     stepsX = 1.25;
     stepsY = 0;
     spriteSnake.x = 0;
     spriteSnake.y = 0;
     scoreText.text = 'Score: 0';
-    if(withApple){
+    if (withApple) {
         spriteApple.x = getRandomValue(WIDTH);
         spriteApple.y = getRandomValue(HEIGHT);
     }
