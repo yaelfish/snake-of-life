@@ -1,5 +1,6 @@
 import './style.css';
 import * as PIXI from 'pixi.js';
+import { sound } from '@pixi/sound';
 
 // Create the application helper and add its render target to the page
 const HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
@@ -15,6 +16,9 @@ let scoreText = new PIXI.Text(`Score: ${score}`, {
     fill: 0xffffff,
     align: 'center',
 });
+
+sound.add('lose', 'lose.mp3');
+sound.add('collect', 'collect.mp3');
 
 document.body.appendChild(app.view);
 const graphics = new PIXI.Graphics();
@@ -34,16 +38,16 @@ const createGrid = (cols: number, rows: number) => {
     return grid;
 };
 
-let rectangels: any[] = [];
+let loseRectangels: any[] = [];
 
-const drawre=( i:number,j:number)=> {
-    const rectangle:{x:number,y:number}={x:i * SIZE,y:j * SIZE};
-    const a= Math.random() > 0.5;
-    if(a){
-        graphics.beginFill(0xFB2208);
-        rectangels.push(rectangle);
-    }else{
-        graphics.beginFill(0x02FC20);
+const drawre = (i: number, j: number) => {
+    const rectangle: { x: number, y: number } = { x: i * SIZE, y: j * SIZE };
+    const isLosing = Math.random() > 0.5;
+    if (isLosing) {
+        graphics.beginFill(0xFB2208); // red
+        loseRectangels.push(rectangle);
+    } else {
+        graphics.beginFill(0x02FC20); // green
     }
     graphics.drawRect(i * SIZE, j * SIZE, SIZE, SIZE);
     graphics.endFill();
@@ -52,8 +56,8 @@ const drawre=( i:number,j:number)=> {
 const drawGrid = (grid: any[]) => {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-            if (grid[i][j]&&isEmptyArea(i,j)) {
-               drawre(i,j);
+            if (grid[i][j]&&isEmptyArea(i, j)) {
+               drawre(i, j);
             }
         }
     }
@@ -103,13 +107,11 @@ const generateNewGrid = (grid: any[]) => {
 
 let grid = createGrid(columns, rows);
 
-setInterval(()=> {
+setInterval(() => {
     graphics.clear();
-    rectangels=[];
+    loseRectangels = [];
     grid = generateNewGrid(grid);
     drawGrid(grid);
-    // increment the ticker
-    // delta += 0.1;
 }, 1800);
 
 let spriteApple = PIXI.Sprite.from('daily-mail.png');
@@ -127,14 +129,15 @@ spriteSnake.y = spriteSnake.height;
 scoreText.x = WIDTH - 150;
 scoreText.y = HEIGHT - 50;
 
-let spriteRestart = PIXI.Sprite.from('restart.png');
+let spriteRestart = PIXI.Sprite.from('restart.svg');
+
 spriteRestart.height = 60, spriteRestart.width = 60;
 // Set the initial positions
-spriteRestart.x =  app.screen.width / 2;
+spriteRestart.x = app.screen.width / 2;
 spriteRestart.y = HEIGHT - 100;
-spriteRestart.interactive=true;
-spriteRestart.buttonMode=true;
-spriteRestart.on('click',()=>{
+spriteRestart.interactive = true;
+spriteRestart.buttonMode = true;
+spriteRestart.on('click', () => {
     restart(true);
 })
 
@@ -201,6 +204,7 @@ function getRandomValue(max: number) {
 
 const eatApple = () => {
     if (Math.abs(spriteSnake.x - spriteApple.x) <= 60 && Math.abs(spriteSnake.y - spriteApple.y) <= 60) {
+        sound.play('collect');
         spriteApple.x = getRandomValue(WIDTH - spriteApple.width);
         spriteApple.y = getRandomValue(HEIGHT - spriteApple.height);
         score++;
@@ -211,8 +215,9 @@ const eatApple = () => {
 
 
 const stuckwall = () => {
-    rectangels.forEach((ch)=>{
+    loseRectangels.forEach((ch) => {
         if (Math.abs(spriteSnake.x - ch.x) <= 35 && Math.abs(spriteSnake.y - ch.y) <= 35) {
+            sound.play('lose');
             restart(false);
         }
     })
@@ -221,8 +226,8 @@ const stuckwall = () => {
 const restart = (withApple:boolean) => {
     stepsX = 1.25;
     stepsY = 0;
-    spriteSnake.x=0;
-    spriteSnake.y=0;
+    spriteSnake.x = 0;
+    spriteSnake.y = 0;
     scoreText.text = 'Score: 0';
     if(withApple){
         spriteApple.x = getRandomValue(WIDTH);
@@ -231,6 +236,7 @@ const restart = (withApple:boolean) => {
     grid = createGrid(columns, rows);
     spriteApple.x = app.screen.width / 2;
     spriteApple.y = app.screen.height / 2;
+    speed = 0;
 }
 
 document.body.addEventListener('keydown', moveSnake);
