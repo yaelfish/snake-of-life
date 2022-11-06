@@ -122,6 +122,17 @@ spriteSnake.y = spriteSnake.height;
 scoreText.x = WIDTH - 150;
 scoreText.y = HEIGHT - 50;
 
+let spriteRestart = PIXI.Sprite.from('restart.png');
+spriteRestart.height = 60, spriteRestart.width = 60;
+// Set the initial positions
+spriteRestart.x =  app.screen.width / 2;
+spriteRestart.y = HEIGHT - 100;
+spriteRestart.interactive=true;
+spriteRestart.buttonMode=true;
+spriteRestart.on('click',()=>{
+    restart();
+})
+app.stage.addChild(spriteRestart);
 app.stage.addChild(spriteApple);
 app.stage.addChild(spriteSnake);
 app.stage.addChild(scoreText);
